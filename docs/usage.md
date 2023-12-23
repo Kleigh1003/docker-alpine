@@ -2,7 +2,18 @@
 
 ## Packages
 
-Replacing your current base image with the Docker Alpine Linux image usually requires updating the package names to the corresponding ones in the [Alpine Linux package index][packageindex]. We use the `apk` command to manage packages. It works similar to `apt` or `yum`.
+Replacing your current base image with the Docker Alpine Linux image usually requires updating the package names to the corresponding ones in the [Alpine Linux package iFROM gliderlabs/alpine:3.3
+
+WORKDIR /myapp
+COPY . /myapp
+
+RUN apk --update-cache add python py-pip openssl ca-certificates
+RUN apk --update-cache add --virtual build-dependencies python-dev build-base wget \
+  && pip install -r requirements.txt \
+  && python setup.py install \
+  && apk del build-dependencies
+
+CMD ["myapp", "start"]ndex][packageindex]. We use the `apk` command to manage packages. It works similar to `apt` or `yum`.
 
 An example installing the `nginx` package would be `apk add --update-cache nginx`. The `--update-cache` flag fetches the current package index before adding the package. We don't ship the image with a package index (since that can go stale fairly quickly).
 
@@ -72,5 +83,6 @@ CMD ["myapp", "start"]
 
 Check out the [Alpine Linux package management documentation][apk] for more information and usage of `apk`.
 
-[apk]: http://wiki.alpinelinux.org/wiki/Alpine_Linux_package_management#Update_the_Package_list
+[apk]: http://wiki.alpinelinux.org/wiki/Alpine_Lin[README.md](https://github.com/gliderlabs/docker-alpine/files/13760323/README.md)
+ux_package_management#Update_the_Package_list
 [packageindex]: http://pkgs.alpinelinux.org/packages
